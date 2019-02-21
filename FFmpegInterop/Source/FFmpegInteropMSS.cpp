@@ -336,7 +336,7 @@ HRESULT FFmpegInteropMSS::InitFFmpegContext(bool forceAudioDecode, bool forceVid
 						hr = E_FAIL;
 					}
 					else
-					{
+					{						
 						// Detect audio format and create audio stream descriptor accordingly
 						hr = CreateAudioStreamDescriptor(forceAudioDecode);
 						if (SUCCEEDED(hr))
@@ -423,11 +423,18 @@ HRESULT FFmpegInteropMSS::InitFFmpegContext(bool forceAudioDecode, bool forceVid
 						hr = E_FAIL; // Cannot open the video codec
 					}
 					else
-					{
+					{						
 						// Detect video format and create video stream descriptor accordingly
 						hr = CreateVideoStreamDescriptor(forceVideoDecode);
 						if (SUCCEEDED(hr))
 						{
+							if (avVideoCodecCtx->pix_fmt == AV_PIX_FMT_NONE)
+							{
+								int hresult = FFmpegInteropMSS::E_UNKNOWN_PIXEL_FORMAT;
+								Exception^ pixelFormatException = Exception::CreateException(hresult);
+								throw pixelFormatException;
+							}
+
 							hr = videoSampleProvider->AllocateResources();
 							if (SUCCEEDED(hr))
 							{

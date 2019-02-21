@@ -34,21 +34,31 @@ extern "C"
 }
 
 namespace FFmpegInterop
-{
+{	
+
 	public ref class FFmpegInteropMSS sealed
 	{
-	public:
+	public:		
 		static FFmpegInteropMSS^ CreateFFmpegInteropMSSFromStream(IRandomAccessStream^ stream, bool forceAudioDecode, bool forceVideoDecode, PropertySet^ ffmpegOptions, MediaStreamSource^ mss);
 		static FFmpegInteropMSS^ CreateFFmpegInteropMSSFromStream(IRandomAccessStream^ stream, bool forceAudioDecode, bool forceVideoDecode, PropertySet^ ffmpegOptions);
 		static FFmpegInteropMSS^ CreateFFmpegInteropMSSFromStream(IRandomAccessStream^ stream, bool forceAudioDecode, bool forceVideoDecode);
 		static FFmpegInteropMSS^ CreateFFmpegInteropMSSFromUri(String^ uri, bool forceAudioDecode, bool forceVideoDecode, PropertySet^ ffmpegOptions);
 		static FFmpegInteropMSS^ CreateFFmpegInteropMSSFromUri(String^ uri, bool forceAudioDecode, bool forceVideoDecode);
+		
+		static property int E_UNKNOWN_PIXEL_FORMAT
+		{
+			int get()
+			{
+				return 0x80090210;
+			}
+		}
 		MediaThumbnailData^ ExtractThumbnail();
 
 		// Contructor
 		MediaStreamSource^ GetMediaStreamSource();
 		virtual ~FFmpegInteropMSS();
 
+		
 		// Properties
 		property AudioStreamDescriptor^ AudioDescriptor
 		{
@@ -133,5 +143,5 @@ namespace FFmpegInterop
 		IStream* fileStreamData;
 		unsigned char* fileStreamBuffer;
 		FFmpegReader^ m_pReader;
-	};
+	};	
 }
